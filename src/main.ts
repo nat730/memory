@@ -17,8 +17,8 @@ const gameContainer = document.querySelector('#game-container') as HTMLDivElemen
 let flippedTiles: HTMLElement[] = []; // Array to hold the flipped tiles
 
 // Fonction pour gérer le clic sur une tuile
-function handleTileClick(tileElement: HTMLElement) {
-    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement)) {
+function click(tileElement: HTMLElement) {
+    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement)&& tileElement.style.color !== 'red') {
         tileElement.style.color = "yellow";
         flippedTiles.push(tileElement);
         if (flippedTiles.length === 2) {
@@ -28,17 +28,17 @@ function handleTileClick(tileElement: HTMLElement) {
                 // Les tuiles correspondent
                 flippedTiles.forEach(tile => {
                     tile.style.color = 'red';
-                    tile.removeEventListener('click', handleTileClick);
+                    tile.removeEventListener('click', click);
                 });
                 flippedTiles = [];
             } else {
                 // Les tuiles ne correspondent pas
-                setTimeout(() => {
+                setTimeout(() => {  
                     flippedTiles.forEach(tile => {
                         tile.style.color = 'blue';
                     });
                     flippedTiles = [];
-                }, 1000);
+                }, 300);
             }
         }
     }
@@ -48,10 +48,10 @@ function handleTileClick(tileElement: HTMLElement) {
 tilevalues.forEach(tile => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
-    tileElement.innerText = tile;
     tileElement.style.color = 'blue';
     tileElement.addEventListener('click', () => {
-        handleTileClick(tileElement);
+        click(tileElement);
+        tileElement.innerText = tile;
     });
     gameContainer?.appendChild(tileElement);
 });
