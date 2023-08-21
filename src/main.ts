@@ -17,7 +17,8 @@ const gameContainer = document.querySelector('#game-container') as HTMLDivElemen
 let flippedTiles: HTMLElement[] = []; // Array to hold the flipped tiles
 
 // Fonction pour gérer le clic sur une tuile
-function click(tileElement: HTMLElement) {
+
+function clic(tileElement: HTMLElement) {
     if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement)&& tileElement.style.color !== 'red') {
         tileElement.style.color = "yellow";
         flippedTiles.push(tileElement);
@@ -28,7 +29,6 @@ function click(tileElement: HTMLElement) {
                 // Les tuiles correspondent
                 flippedTiles.forEach(tile => {
                     tile.style.color = 'red';
-                    tile.removeEventListener('click', click);
                 });
                 flippedTiles = [];
             } else {
@@ -36,6 +36,7 @@ function click(tileElement: HTMLElement) {
                 setTimeout(() => {  
                     flippedTiles.forEach(tile => {
                         tile.style.color = 'blue';
+                        tileElement.innerText = "","";
                     });
                     flippedTiles = [];
                 }, 300);
@@ -50,7 +51,7 @@ tilevalues.forEach(tile => {
     tileElement.classList.add('tile');
     tileElement.style.color = 'blue';
     tileElement.addEventListener('click', () => {
-        click(tileElement);
+        clic(tileElement);
         tileElement.innerText = tile;
     });
     gameContainer?.appendChild(tileElement);
