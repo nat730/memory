@@ -7,49 +7,52 @@ function shuffleArray(array: any[]) {
 }
 
 // Créer un tableau de valeurs de tuiles
-const tilevalues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+const tilevalues = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
 // Mélanger les valeurs de tuiles
 shuffleArray(tilevalues);
 
 // Créer un conteneur pour le plateau de jeu
-const gameContainer = document.querySelector('#game-container') as HTMLDivElement;
+const gameContainer = document.querySelector('#game-container');
 
-let flippedTiles: HTMLElement[] = []; // Array to hold the flipped tiles
+let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 
 // Fonction pour gérer le clic sur une tuile
-
 function clic(tileElement: HTMLElement) {
-    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement)&& tileElement.style.color !== 'red') {
+    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement) && tileElement.style.color !== 'red') {
         tileElement.style.color = "yellow";
         flippedTiles.push(tileElement);
         if (flippedTiles.length === 2) {
-            const tile1 = flippedTiles[0].innerText;
-            const tile2 = flippedTiles[1].innerText;
+            const tile1 = flippedTiles[0].getAttribute('data-tile-id');
+            const tile2 = flippedTiles[1].getAttribute('data-tile-id');
+            
+            // Les tuiles correspondent
             if (tile1 === tile2) {
-                // Les tuiles correspondent
                 flippedTiles.forEach(tile => {
                     tile.style.color = 'red';
                 });
                 flippedTiles = [];
             } else {
-                // Les tuiles ne correspondent pas
-                setTimeout(() => {  
+            
+                    // Les tuiles ne correspondent pas
+                setTimeout(() => {
                     flippedTiles.forEach(tile => {
                         tile.style.color = 'blue';
-                        tileElement.innerText = "","";
+                        tile.innerText = "";
                     });
                     flippedTiles = [];
                 }, 300);
             }
+
         }
     }
 }
 
 // Créer et afficher les tuiles sur le plateau de jeu
-tilevalues.forEach(tile => {
+tilevalues.forEach((tile, index) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
     tileElement.style.color = 'blue';
+    tileElement.setAttribute('data-tile-id', tile); // Utiliser la valeur de tuile comme data-tile-id
     tileElement.addEventListener('click', () => {
         clic(tileElement);
         tileElement.innerText = tile;
