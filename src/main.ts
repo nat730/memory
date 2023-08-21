@@ -52,7 +52,7 @@ tilevalues.forEach((tile, index) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
     tileElement.style.color = 'blue';
-    tileElement.setAttribute('data-tile-id', tile); // Utiliser la valeur de tuile comme data-tile-id
+    tileElement.setAttribute('data-tile-id', index.toString()); // Utiliser l'index comme data-tile-id
     tileElement.addEventListener('click', () => {
         clic(tileElement);
         tileElement.innerText = tile;
