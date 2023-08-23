@@ -24,7 +24,7 @@ function clic(tileElement: HTMLElement) {
         if (flippedTiles.length === 2) {
             const tile1 = flippedTiles[0].getAttribute('data-tile-id');
             const tile2 = flippedTiles[1].getAttribute('data-tile-id');
-            
+
             // Les tuiles correspondent
             if (tile1 === tile2) {
                 flippedTiles.forEach(tile => {
