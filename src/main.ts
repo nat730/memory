@@ -12,7 +12,7 @@ const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pi
 shuffleArray(tileColors);
 
 // Créer un conteneur pour le plateau de jeu
-const gameContainer = document.querySelector('#game-container');
+const gameContainer = document.querySelector('#game-container') as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 
@@ -56,3 +56,11 @@ tileColors.forEach((color) => {
     });
     gameContainer?.appendChild(tileElement);
 });
+
+// Afficher le plateau de jeu
+let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
+
+startButton.addEventListener("click", () => {
+  startButton.remove();
+  gameContainer?.classList.remove("hidden-visibility");
+})
