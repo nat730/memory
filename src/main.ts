@@ -56,3 +56,5 @@ tileColors.forEach((color) => {
     });
     gameContainer?.appendChild(tileElement);
 });
+
+*
