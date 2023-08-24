@@ -5,6 +5,23 @@ function shuffleArray(array: any[]) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+//creer le compteur
+
+let compteur = 0;
+  let secondes = 0;
+
+
+  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+  let chrono = window.setInterval(tictac, 1000);    
+
+  function tictac() {
+        secondes++;
+        const minutesAffichage = Math.floor(secondes / 60);
+        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+    }
+    
+
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
@@ -14,7 +31,8 @@ shuffleArray(tileColors);
 // Créer un conteneur pour le plateau de jeu
 const gameContainer = document.querySelector('#game-container') as HTMLDivElement;
 const menuContainer = document.querySelector("#menu-container") as HTMLDivElement;
-const restartButton = document.createElement("button") as HTMLButtonElement;
+const restartButton = document.createElement("button") as HTMLButtonElement ;
+const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
@@ -34,6 +52,7 @@ function clic(tileElement: HTMLElement) {
                     tile.style.backgroundColor = 'red';
                 });
                 flippedTiles = [];
+                compteur++;
                 wonTiles.push("X");
 
             } if (wonTiles.length == 8) { // Afficher bouton restart quand partie terminée
@@ -42,7 +61,8 @@ function clic(tileElement: HTMLElement) {
                 menuContainer.appendChild(restartButton);
                 gameContainer.classList.add("less-opacity")
             }
-                else {
+                
+            else {
                 // Les tuiles ne correspondent pas
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
@@ -51,13 +71,16 @@ function clic(tileElement: HTMLElement) {
                     });
                     flippedTiles = [];
                 }, 1000);
+                compteur++;
             }
         }
     }
+    compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
 
 // Créer et afficher les tuiles sur le plateau de jeu
 function init(){
+
 tileColors.forEach((color) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
