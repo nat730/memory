@@ -32,3 +32,12 @@ body {
   transition: background-color 0.5s ease-in-out;
 }
 
+.compteur-container {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-gap: 10px;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
