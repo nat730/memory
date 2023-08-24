@@ -5,6 +5,23 @@ function shuffleArray(array: any[]) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+//creer le compteur
+
+let compteur = 0;
+  let secondes = 0;
+
+
+  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+  let chrono = window.setInterval(tictac, 1000);    
+
+  function tictac() {
+        secondes++;
+        const minutesAffichage = Math.floor(secondes / 60);
+        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+    }
+    
+
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
@@ -12,7 +29,8 @@ const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pi
 shuffleArray(tileColors);
 
 // Créer un conteneur pour le plateau de jeu
-const gameContainer = document.querySelector('#game-container');
+const gameContainer = document.querySelector('#game-container') ;
+const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 
@@ -31,7 +49,9 @@ function clic(tileElement: HTMLElement) {
                     tile.style.backgroundColor = 'red';
                 });
                 flippedTiles = [];
-            } else {
+                compteur++;
+            } 
+            else {
                 // Les tuiles ne correspondent pas
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
@@ -40,12 +60,15 @@ function clic(tileElement: HTMLElement) {
                     });
                     flippedTiles = [];
                 }, 1000);
+                compteur++;
             }
         }
     }
+    compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
 
 // Créer et afficher les tuiles sur le plateau de jeu
+
 tileColors.forEach((color) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
@@ -55,4 +78,4 @@ tileColors.forEach((color) => {
         clic(tileElement);
     });
     gameContainer?.appendChild(tileElement);
-});
+})
