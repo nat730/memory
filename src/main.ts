@@ -8,6 +8,20 @@ function shuffleArray(array: any[]) {
 //creer le compteur
 
 let compteur = 0;
+  let secondes = 0;
+
+
+  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+  let chrono = window.setInterval(tictac, 1000);    
+
+  function tictac() {
+        secondes++;
+        const minutesAffichage = Math.floor(secondes / 60);
+        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+    }
+    
+
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
@@ -52,7 +66,6 @@ function clic(tileElement: HTMLElement) {
     }
     compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
-console.log(compteur);
 
 // Créer et afficher les tuiles sur le plateau de jeu
 
@@ -66,4 +79,3 @@ tileColors.forEach((color) => {
     });
     gameContainer?.appendChild(tileElement);
 })
-//afficher le compteur
