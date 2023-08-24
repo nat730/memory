@@ -14,6 +14,7 @@ shuffleArray(tileColors);
 // Créer un conteneur pour le plateau de jeu
 const gameContainer = document.querySelector('#game-container') as HTMLDivElement;
 const menuContainer = document.querySelector("#menu-container") as HTMLDivElement;
+const restartButton = document.createElement("button") as HTMLButtonElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
@@ -36,7 +37,6 @@ function clic(tileElement: HTMLElement) {
                 wonTiles.push("X");
 
             } if (wonTiles.length == 8) { // Afficher bouton restart quand partie terminée
-                const restartButton = document.createElement("button") as HTMLButtonElement;
                 restartButton.innerText = "Recommencer";
                 restartButton.setAttribute("id", "restartbutton");
                 menuContainer.appendChild(restartButton);
@@ -57,6 +57,7 @@ function clic(tileElement: HTMLElement) {
 }
 
 // Créer et afficher les tuiles sur le plateau de jeu
+function init(){
 tileColors.forEach((color) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
@@ -67,7 +68,8 @@ tileColors.forEach((color) => {
     });
     gameContainer?.appendChild(tileElement);
 });
-
+}
+init();
 // Afficher le plateau de jeu avec un bouton de démarrage
 let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
 
@@ -78,8 +80,11 @@ startButton.addEventListener("click", () => {
 
 
 // Relance la partie quand le bouton est cliqué
-startButton.addEventListener("click", () => {
+restartButton.addEventListener("click", () => {
+    wonTiles = [];
     gameContainer.classList.remove("less-opacity");
+    const findTiles = document.querySelectorAll(".tile");
+    findTiles?.forEach ( tile => tile.remove());
     shuffleArray(tileColors);
-    //clic(tileElement);
+    init();
 })
