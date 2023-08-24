@@ -71,7 +71,7 @@ function clic(tileElement: HTMLElement) {
                         tile.innerText = "";
                     });
                     flippedTiles = [];
-                }, 1000);
+                }, 300);
                 compteur++;
             }
         }
