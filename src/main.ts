@@ -13,6 +13,7 @@ shuffleArray(tileColors);
 
 // Créer un conteneur pour le plateau de jeu
 const gameContainer = document.querySelector('#game-container') as HTMLDivElement;
+const menuContainer = document.querySelector("#menu-container") as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
@@ -33,7 +34,15 @@ function clic(tileElement: HTMLElement) {
                 });
                 flippedTiles = [];
                 wonTiles.push("X");
-            } else {
+
+            } if (wonTiles.length == 8) { // Afficher bouton restart quand partie terminée
+                const restartButton = document.createElement("button") as HTMLButtonElement;
+                restartButton.innerText = "Recommencer";
+                restartButton.setAttribute("id", "restartbutton");
+                menuContainer.appendChild(restartButton);
+                gameContainer.classList.add("less-opacity")
+            }
+                else {
                 // Les tuiles ne correspondent pas
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
@@ -67,4 +76,10 @@ startButton.addEventListener("click", () => {
   gameContainer?.classList.remove("hidden-visibility");
 })
 
-// Afficher bouton restart quand partie terminée
+
+// Relance la partie quand le bouton est cliqué
+startButton.addEventListener("click", () => {
+    gameContainer.classList.remove("less-opacity");
+    shuffleArray(tileColors);
+    //clic(tileElement);
+})
