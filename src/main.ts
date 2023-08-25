@@ -8,13 +8,11 @@ function shuffleArray(array: any[]) {
 
 let secondes = 0;
 let StartCompteur = false;
-let chronoInterval;
 
+let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+let chronoInterval: number;
 
-  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
-  let chrono = window.setInterval(tictac, 1000);    
-
-  function tictac() {
+function tictac() {
     if (StartCompteur) {
         secondes++;
         const minutesAffichage = Math.floor(secondes / 60);
@@ -22,6 +20,7 @@ let chronoInterval;
         ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
     }
 }
+
     
 
 
@@ -108,9 +107,11 @@ init();
 let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
 
 startButton.addEventListener("click", () => {
-  startButton.remove();
-  gameContainer?.classList.remove("hidden-visibility");
-})
+    startButton.remove();
+    gameContainer?.classList.remove("hidden-visibility");
+    StartCompteur = true;  // Démarrage du compteur
+    chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
+});
 
 
 // Relance la partie quand le bouton est cliqué
