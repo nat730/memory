@@ -21,8 +21,6 @@ function tictac() {
     }
 }
 
-    
-
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
