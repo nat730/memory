@@ -9,7 +9,7 @@ function shuffleArray(array: any[]) {
 let secondes = 0;
 let StartCompteur = false;
 
-let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+let chronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
 let chronoInterval: number;
 
 function tictac() {
@@ -17,7 +17,7 @@ function tictac() {
         secondes++;
         const minutesAffichage = Math.floor(secondes / 60);
         const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
-        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+        chronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
     }
 }
 
@@ -116,7 +116,7 @@ function buttonRemover() {
 startButton.addEventListener("click", () => {
     buttonRemover()
     gameContainer?.classList.remove("hidden-visibility");
-    ChronoContainer?.classList.remove("hidden-visibility");
+    chronoContainer?.classList.remove("hidden-visibility");
     compteurContainer?.classList.remove("hidden-visibility");
     init();
     StartCompteur = true;  // Démarrage du compteur
@@ -125,7 +125,9 @@ startButton.addEventListener("click", () => {
 
 dogstartButton.addEventListener("click", () => {
     buttonRemover()
-      gameContainer?.classList.remove("hidden-visibility");
+    gameContainer?.classList.remove("hidden-visibility");
+    chronoContainer?.classList.remove("hidden-visibility");
+    compteurContainer?.classList.remove("hidden-visibility");
     dogInit();
     StartCompteur = true;  // Démarrage du compteur
     chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
