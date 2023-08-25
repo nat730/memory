@@ -127,7 +127,6 @@ dogstartButton.addEventListener("click", () => {
     buttonRemover()
     gameContainer?.classList.remove("hidden-visibility");
     chronoContainer?.classList.remove("hidden-visibility");
-    compteurContainer?.classList.remove("hidden-visibility");
     dogInit();
     StartCompteur = true;  // Démarrage du compteur
     chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
@@ -202,4 +201,5 @@ function dogInit() {
     })
     dogTilesElement.sort( () => Math.random() - 0.5);
     dogTilesElement.forEach( dogTile => gameContainer.appendChild(dogTile));
+
 }
