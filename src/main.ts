@@ -4,6 +4,27 @@ function shuffleArray(array: any[]) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+//creer le compteur
+
+let compteur = 0;
+let secondes = 0;
+let StartCompteur = false;
+let chronoInterval;
+
+
+  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+  let chrono = window.setInterval(tictac, 1000);    
+
+  function tictac() {
+    if (StartCompteur) {
+        secondes++;
+        const minutesAffichage = Math.floor(secondes / 60);
+        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+    }
+}
+    
+
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
@@ -16,6 +37,7 @@ const restartButton = document.createElement("button") as HTMLButtonElement ;
 const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
+let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let compteur = 0 
 function clic(tileElement: HTMLElement) {
@@ -32,7 +54,17 @@ function clic(tileElement: HTMLElement) {
                     tile.style.backgroundColor = 'red';
                 });
                 flippedTiles = [];
-            } else {
+                wonTiles.push("X");
+
+            } if (wonTiles.length == 8) { // Afficher bouton restart quand partie terminée
+                restartButton.innerText = "Recommencer";
+                restartButton.setAttribute("id", "restartbutton");
+                menuContainer.appendChild(restartButton);
+                restartButton.style.display = "block";
+                gameContainer.classList.add("less-opacity")
+            }
+                
+            else {
                 // Les tuiles ne correspondent pas
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
@@ -44,10 +76,20 @@ function clic(tileElement: HTMLElement) {
                 compteur++;
             }
         }
+        
+        if (compteur > 0) {
+            compteurContainer.innerText = `nombre de coups : ${compteur}`;
+            compteurContainer.classList.remove("hidden");
+        } else {
+            compteurContainer.innerText = "";
+            compteurContainer.classList.add("hidden");
+        }
+        
     }
     compteurContainer.innerText = `nombre de coups : ${compteur}`;
-    compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
+    compteurContainer.innerText = "";
+    compteurContainer.classList.add("hidden");
 
 // Créer et afficher les tuiles sur le plateau de jeu
 function init(){
@@ -81,5 +123,35 @@ restartButton.addEventListener("click", () => {
     const findTiles = document.querySelectorAll(".tile");
     findTiles?.forEach ( tile => tile.remove());
     shuffleArray(tileColors);
+    init();
+});
+}
+init();
+// Afficher le plateau de jeu avec un bouton de démarrage
+let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
+
+startButton.addEventListener("click", () => {
+    startButton.remove();
+    gameContainer?.classList.remove("hidden-visibility");
+    StartCompteur = true; // Démarrer le compteur
+    secondes = 0;
+});
+
+
+
+
+// Relance la partie quand le bouton est cliqué
+restartButton.addEventListener("click", () => {
+    wonTiles = [];
+    secondes = 0
+    chrono = 0
+    compteur = 0;
+    compteurContainer.innerText = "";
+    compteurContainer.classList.add("hidden");
+    restartButton.style.display = "none";
+    gameContainer.classList.remove("less-opacity");
+    const findTiles = document.querySelectorAll(".tile");
+    findTiles?.forEach ( tile => tile.remove());
+    shuffleArray(tileColors);   
     init();
 })
