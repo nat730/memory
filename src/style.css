@@ -1,10 +1,16 @@
 body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   min-height: 100vh;
   margin: 0;
   background-color: #f0f0f0;
+}
+
+#menu-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .game-container {
@@ -15,6 +21,18 @@ body {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.hidden-visibility {
+  visibility: hidden;
+}
+
+.display-none {
+  display: none;
+}
+
+.less-opacity {
+  opacity: 0.2;
 }
 
 .tile {
@@ -41,6 +59,12 @@ body {
   border-radius: 5px;
 }
 
+#chrono-container {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 #chrono-container {
   background-color: white;
   padding: 20px;
