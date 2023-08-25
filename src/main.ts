@@ -6,7 +6,6 @@ function shuffleArray(array: any[]) {
 }
 //creer le compteur
 
-let compteur = 0;
 let secondes = 0;
 let StartCompteur = false;
 let chronoInterval;
@@ -37,7 +36,6 @@ const restartButton = document.createElement("button") as HTMLButtonElement ;
 const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
-let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let compteur = 0 
 function clic(tileElement: HTMLElement) {
@@ -125,33 +123,3 @@ restartButton.addEventListener("click", () => {
     shuffleArray(tileColors);
     init();
 });
-}
-init();
-// Afficher le plateau de jeu avec un bouton de démarrage
-let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
-
-startButton.addEventListener("click", () => {
-    startButton.remove();
-    gameContainer?.classList.remove("hidden-visibility");
-    StartCompteur = true; // Démarrer le compteur
-    secondes = 0;
-});
-
-
-
-
-// Relance la partie quand le bouton est cliqué
-restartButton.addEventListener("click", () => {
-    wonTiles = [];
-    secondes = 0
-    chrono = 0
-    compteur = 0;
-    compteurContainer.innerText = "";
-    compteurContainer.classList.add("hidden");
-    restartButton.style.display = "none";
-    gameContainer.classList.remove("less-opacity");
-    const findTiles = document.querySelectorAll(".tile");
-    findTiles?.forEach ( tile => tile.remove());
-    shuffleArray(tileColors);   
-    init();
-})
