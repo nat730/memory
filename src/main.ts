@@ -78,4 +78,4 @@ tileColors.forEach((color) => {
         clic(tileElement);
     });
     gameContainer?.appendChild(tileElement);
-}).
+})
