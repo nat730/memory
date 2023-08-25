@@ -1,40 +1,31 @@
-// Mélanger un tableau en utilisant l'algorithme Fisher-Yates
 function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-//creer le compteur
 
 let compteur = 0;
-  let secondes = 0;
+let secondes = 0;
 
+let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
+let chrono = window.setInterval(tictac, 1000);
 
-  let ChronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
-  let chrono = window.setInterval(tictac, 1000);    
+function tictac() {
+    secondes++;
+    const minutesAffichage = Math.floor(secondes / 60);
+    const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+    ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+}
 
-  function tictac() {
-        secondes++;
-        const minutesAffichage = Math.floor(secondes / 60);
-        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
-        ChronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
-    }
-    
-
-
-// Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
-// Mélanger les valeurs de couleurs
 shuffleArray(tileColors);
 
-// Créer un conteneur pour le plateau de jeu
-const gameContainer = document.querySelector('#game-container') ;
+const gameContainer = document.querySelector('#game-container');
 const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
-let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
+let flippedTiles: HTMLElement[] = [];
 
-// Fonction pour gérer le clic sur une tuile
 function clic(tileElement: HTMLElement) {
     if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement) && tileElement.style.backgroundColor !== 'red') {
         tileElement.style.backgroundColor = tileElement.getAttribute('data-tile-id')!;
@@ -43,7 +34,6 @@ function clic(tileElement: HTMLElement) {
             const tile1 = flippedTiles[0].getAttribute('data-tile-id');
             const tile2 = flippedTiles[1].getAttribute('data-tile-id');
             
-            // Les tuiles correspondent
             if (tile1 === tile2) {
                 flippedTiles.forEach(tile => {
                     tile.style.backgroundColor = 'red';
@@ -52,14 +42,13 @@ function clic(tileElement: HTMLElement) {
                 compteur++;
             } 
             else {
-                // Les tuiles ne correspondent pas
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
                         tile.style.backgroundColor = 'blue';
                         tile.innerText = "";
                     });
                     flippedTiles = [];
-                }, 300);
+                }, 500);
                 compteur++;
             }
         }
@@ -67,15 +56,13 @@ function clic(tileElement: HTMLElement) {
     compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
 
-// Créer et afficher les tuiles sur le plateau de jeu
-
 tileColors.forEach((color) => {
     const tileElement = document.createElement('div');
     tileElement.classList.add('tile');
     tileElement.style.backgroundColor = 'blue';
-    tileElement.setAttribute('data-tile-id', color); // Utiliser la couleur comme data-tile-id
+    tileElement.setAttribute('data-tile-id', color);
     tileElement.addEventListener('click', () => {
         clic(tileElement);
     });
     gameContainer?.appendChild(tileElement);
-})
+});
