@@ -102,13 +102,28 @@ tileColors.forEach((color) => {
     gameContainer?.appendChild(tileElement);
 });
 }
-init();
+
 // Afficher le plateau de jeu avec un bouton de démarrage
 let startButton = document.querySelector("#startbutton") as HTMLButtonElement;
+let dogstartButton = document.querySelector("#dog-start-button") as HTMLButtonElement;
+
+function buttonRemover() {
+    startButton.remove();
+    dogstartButton.remove();
+}
 
 startButton.addEventListener("click", () => {
-    startButton.remove();
+    buttonRemover()
     gameContainer?.classList.remove("hidden-visibility");
+    init();
+    StartCompteur = true;  // Démarrage du compteur
+    chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
+})
+
+dogstartButton.addEventListener("click", () => {
+    buttonRemover()
+      gameContainer?.classList.remove("hidden-visibility");
+    dogInit();
     StartCompteur = true;  // Démarrage du compteur
     chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
 });
@@ -122,5 +137,64 @@ restartButton.addEventListener("click", () => {
     const findTiles = document.querySelectorAll(".tile");
     findTiles?.forEach ( tile => tile.remove());
     shuffleArray(tileColors);
-    init();
-});
+    dogInit();
+})
+
+// Partie avec les images de chien
+let dogsDatas: string[] = []
+let dogFirstFlippedTile: HTMLElement | null;
+let dogWonTiles: HTMLElement[] = [];
+
+async function getDogs() {
+    try {
+
+        for(let i = 0; i < 8; i++){
+            const reponse = await fetch("https://dog.ceo/api/breeds/image/random")
+            const dogData = await reponse.json();
+            dogsDatas.push(dogData.message)
+        }
+        console.log('reponse', dogsDatas)
+    }
+    catch(err){
+        console.error('error', err)
+    }
+}
+
+getDogs();
+
+
+function dogInit() {
+    const dogTilesElement = new Array(16).fill('').map( (_, i) => {
+    const dogTile = document.createElement("img");
+    dogTile.classList.add("tile");
+    dogTile.addEventListener("click", () => {
+        dogTile.setAttribute("src", dogsDatas[Math.floor(i/2)]);
+            if (dogFirstFlippedTile === null) {
+                dogFirstFlippedTile = dogTile;
+                console.log(dogFirstFlippedTile);
+            }
+            else if (dogFirstFlippedTile?.getAttribute("src") === dogTile.getAttribute("src")) {
+                console.log(dogTile.getAttribute("src"))
+                dogWonTiles.push(dogFirstFlippedTile);
+              if (dogWonTiles.length == 8){
+                gameContainer.classList.add("less-opacity");
+              }
+              else {
+                dogFirstFlippedTile = null;
+                compteur++;
+              }
+            }
+            else {
+              setTimeout(() => {
+                dogFirstFlippedTile?.removeAttribute("src");
+                dogTile.removeAttribute("src");
+                dogFirstFlippedTile = null;
+              }, 1000);
+              compteur++;
+            }
+          });
+          return dogTile;
+    })
+    dogTilesElement.sort( () => Math.random() - 0.5);
+    dogTilesElement.forEach( dogTile => gameContainer.appendChild(dogTile));
+}
