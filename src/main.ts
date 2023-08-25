@@ -59,6 +59,7 @@ function clic(tileElement: HTMLElement) {
                 restartButton.innerText = "Recommencer";
                 restartButton.setAttribute("id", "restartbutton");
                 menuContainer.appendChild(restartButton);
+                restartButton.style.display = "block";
                 gameContainer.classList.add("less-opacity")
             }
                 
@@ -105,6 +106,7 @@ startButton.addEventListener("click", () => {
 // Relance la partie quand le bouton est cliqué
 restartButton.addEventListener("click", () => {
     wonTiles = [];
+    restartButton.style.display = "none";
     gameContainer.classList.remove("less-opacity");
     const findTiles = document.querySelectorAll(".tile");
     findTiles?.forEach ( tile => tile.remove());
