@@ -34,6 +34,7 @@ const menuContainer = document.querySelector("#menu-container") as HTMLDivElemen
 const restartButton = document.createElement("button") as HTMLButtonElement ;
 const compteurContainer = document.querySelector('#compteur-container') as HTMLDivElement;
 
+
 let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles retournées
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let compteur = 0 
@@ -115,6 +116,8 @@ function buttonRemover() {
 startButton.addEventListener("click", () => {
     buttonRemover()
     gameContainer?.classList.remove("hidden-visibility");
+    ChronoContainer?.classList.remove("hidden-visibility");
+    compteurContainer?.classList.remove("hidden-visibility");
     init();
     StartCompteur = true;  // Démarrage du compteur
     chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
