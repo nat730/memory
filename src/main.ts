@@ -179,11 +179,14 @@ function dogInit() {
                 console.log(dogTile.getAttribute("src"))
                 dogWonTiles.push(dogFirstFlippedTile);
               if (dogWonTiles.length == 8){
-                gameContainer.classList.add("less-opacity");
+                restartButton.innerText = "Recommencer";
+                restartButton.setAttribute("id", "restartbutton");
+                menuContainer.appendChild(restartButton);
+                restartButton.style.display = "block";
+                gameContainer.classList.add("less-opacity")
               }
               else {
                 dogFirstFlippedTile = null;
-                compteur++;
               }
             }
             else {
@@ -193,6 +196,13 @@ function dogInit() {
                 dogFirstFlippedTile = null;
               }, 1000);
               compteur++;
+            }
+            if (compteur > 0) {
+                compteurContainer.innerText = `nombre de coups : ${compteur}`;
+                compteurContainer.classList.remove("hidden");
+            } else {
+                compteurContainer.innerText = "";
+                compteurContainer.classList.add("hidden");
             }
           });
           return dogTile;
