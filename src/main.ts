@@ -4,23 +4,21 @@ function shuffleArray(array: any[]) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
-//creer le compteur
 
-let secondes = 0;
 let StartCompteur = false;
-
 let chronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
 let chronoInterval: number;
+let startTime: number; // New variable to store the start time
 
 function tictac() {
     if (StartCompteur) {
-        secondes++;
-        const minutesAffichage = Math.floor(secondes / 60);
-        const secondesAffichage = (secondes % 60).toString().padStart(2, '0');
+        const currentTime = Date.now();
+        const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+        const minutesAffichage = Math.floor(elapsedSeconds / 60);
+        const secondesAffichage = (elapsedSeconds % 60).toString().padStart(2, '0');
         chronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
     }
 }
-
 
 // Créer un tableau de valeurs de couleurs
 const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
@@ -58,6 +56,7 @@ function clic(tileElement: HTMLElement) {
                 menuContainer.appendChild(restartButton);
                 restartButton.style.display = "block";
                 gameContainer.classList.add("less-opacity")
+                
             }
                 
             else {
@@ -117,29 +116,33 @@ startButton.addEventListener("click", () => {
     chronoContainer?.classList.remove("hidden-visibility");
     compteurContainer?.classList.remove("hidden-visibility");
     init();
-    StartCompteur = true;  // Démarrage du compteur
-    chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
-})
+    StartCompteur = true;  // Start the timer
+    startTime = Date.now(); // Record the start time
+    chronoInterval = setInterval(tictac, 1000); // Start the timer interval
+});
 
 dogstartButton.addEventListener("click", () => {
     buttonRemover()
     gameContainer?.classList.remove("hidden-visibility");
     chronoContainer?.classList.remove("hidden-visibility");
     dogInit();
-    StartCompteur = true;  // Démarrage du compteur
-    chronoInterval = setInterval(tictac, 1000); // Démarrage du chronomètre
+    StartCompteur = true;  // Start the timer
+    startTime = Date.now(); // Record the start time
+    chronoInterval = setInterval(tictac, 1000); // Start the timer interval
 });
+
 
 
 // Relance la partie quand le bouton est cliqué
 restartButton.addEventListener("click", () => {
+    compteur = 0;
     wonTiles = [];
     restartButton.style.display = "none";
     gameContainer.classList.remove("less-opacity");
     const findTiles = document.querySelectorAll(".tile");
     findTiles?.forEach ( tile => tile.remove());
     shuffleArray(tileColors);
-    dogInit();
+    init();
 })
 
 // Partie avec les images de chien
