@@ -9,19 +9,24 @@ let StartCompteur = false;
 let chronoContainer = document.querySelector("#chrono-container") as HTMLDivElement;
 let chronoInterval: number;
 let startTime: number; // New variable to store the start time
+let isGameFinished = false;
+
 
 function tictac() {
-    if (StartCompteur) {
+    if (StartCompteur && !isGameFinished) {
         const currentTime = Date.now();
         const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
         const minutesAffichage = Math.floor(elapsedSeconds / 60);
         const secondesAffichage = (elapsedSeconds % 60).toString().padStart(2, '0');
         chronoContainer.innerText = `temps écoulé : ${minutesAffichage}:${secondesAffichage}`;
+    } else {
+        clearInterval(chronoInterval); // Stop the timer interval
     }
 }
 
+
 // Créer un tableau de valeurs de couleurs
-const tileColors = ['black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'white', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
+const tileColors = ['black', 'red', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan', 'black', 'red', 'green', 'yellow', 'purple', 'orange', 'pink', 'cyan'];
 shuffleArray(tileColors);
 
 // Créer un conteneur pour le plateau de jeu
@@ -35,43 +40,41 @@ let flippedTiles: HTMLElement[] = []; // tableau pour récupérer les tuiles ret
 let wonTiles: string[] = [] // tableau pour récupérer le nombre de tuiles gagnés
 let compteur = 0 
 function clic(tileElement: HTMLElement) {
-    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement) && tileElement.style.backgroundColor !== 'red') {
+    if (flippedTiles.length < 2 && !flippedTiles.includes(tileElement) && !tileElement.hasAttribute('data-matched')) {
         tileElement.style.backgroundColor = tileElement.getAttribute('data-tile-id')!;
         flippedTiles.push(tileElement);
         if (flippedTiles.length === 2) {
             const tile1 = flippedTiles[0].getAttribute('data-tile-id');
             const tile2 = flippedTiles[1].getAttribute('data-tile-id');
 
-            // Les tuiles correspondent
             if (tile1 === tile2) {
                 flippedTiles.forEach(tile => {
-                    tile.style.backgroundColor = 'red';
+                    tile.setAttribute('data-matched', 'true'); // Mark tiles as matched
                 });
                 flippedTiles = [];
                 wonTiles.push("X");
 
-            } if (wonTiles.length == 8) { // Afficher bouton restart quand partie terminée
-                restartButton.innerText = "Recommencer";
-                restartButton.setAttribute("id", "restartbutton");
-                menuContainer.appendChild(restartButton);
-                restartButton.style.display = "block";
-                gameContainer.classList.add("less-opacity")
-                
-            }
-                
-            else {
-                // Les tuiles ne correspondent pas
+                if (wonTiles.length === 8) { // Check if all tiles are matched
+                    isGameFinished = true;
+                    restartButton.innerText = "Recommencer";
+                    restartButton.setAttribute("id", "restartbutton");
+                    menuContainer.appendChild(restartButton);
+                    restartButton.style.display = "block";
+                    gameContainer.classList.add("less-opacity");
+                }
+
+            } else {
                 setTimeout(() => {
                     flippedTiles.forEach(tile => {
                         tile.style.backgroundColor = 'blue';
                         tile.innerText = "";
                     });
                     flippedTiles = [];
-                }, 500);
+                }, 1000);
                 compteur++;
             }
         }
-        
+
         if (compteur > 0) {
             compteurContainer.innerText = `nombre de coups : ${compteur}`;
             compteurContainer.classList.remove("hidden");
@@ -79,10 +82,10 @@ function clic(tileElement: HTMLElement) {
             compteurContainer.innerText = "";
             compteurContainer.classList.add("hidden");
         }
-        
     }
     compteurContainer.innerText = `nombre de coups : ${compteur}`;
 }
+
     compteurContainer.innerText = "";
     compteurContainer.classList.add("hidden");
 
@@ -116,9 +119,9 @@ startButton.addEventListener("click", () => {
     chronoContainer?.classList.remove("hidden-visibility");
     compteurContainer?.classList.remove("hidden-visibility");
     init();
-    StartCompteur = true;  // Start the timer
-    startTime = Date.now(); // Record the start time
-    chronoInterval = setInterval(tictac, 1000); // Start the timer interval
+    StartCompteur = true;
+    startTime = Date.now();
+    chronoInterval = setInterval(tictac, 1000);
 });
 
 dogstartButton.addEventListener("click", () => {
@@ -135,15 +138,34 @@ dogstartButton.addEventListener("click", () => {
 
 // Relance la partie quand le bouton est cliqué
 restartButton.addEventListener("click", () => {
+    // Arrêter le chronomètre
+    StartCompteur = false;
+    clearInterval(chronoInterval);
+
+    // Réinitialiser le chronomètre et le compteur
+    startTime = 0;
+    chronoContainer.innerText = "temps écoulé : 0:00";
     compteur = 0;
+    compteurContainer.innerText = "";
+    StartCompteur = true;
+    startTime = Date.now();
+    chronoInterval = setInterval(tictac, 1000);
+
+    // Réinitialiser l'état du jeu
     wonTiles = [];
-    restartButton.style.display = "none";
-    gameContainer.classList.remove("less-opacity");
+    isGameFinished = false;
+
+    // Réinitialiser les tuiles et recommencer le jeu
     const findTiles = document.querySelectorAll(".tile");
-    findTiles?.forEach ( tile => tile.remove());
+    findTiles?.forEach(tile => tile.remove());
     shuffleArray(tileColors);
     init();
-})
+
+    // Cacher le bouton de recommencement et rétablir l'opacité du plateau
+    restartButton.style.display = "none";
+    gameContainer.classList.remove("less-opacity");
+});
+
 
 // Partie avec les images de chien
 let dogsDatas: string[] = []
@@ -198,8 +220,8 @@ function dogInit() {
                 dogTile.removeAttribute("src");
                 dogFirstFlippedTile = null;
               }, 1000);
-              compteur++;
             }
+            compteur++;
             if (compteur > 0) {
                 compteurContainer.innerText = `nombre de coups : ${compteur}`;
                 compteurContainer.classList.remove("hidden");
