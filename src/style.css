@@ -52,7 +52,6 @@ button {
   align-items: center;
   width: 100px;
   height: 100px;
-  background-color: blue;
   color: white;
   font-size: 24px;
   font-weight: bold;
@@ -75,4 +74,8 @@ button {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.blue {
+  background-color: blue;
 }

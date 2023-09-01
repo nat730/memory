@@ -227,16 +227,23 @@ function dogInit() {
         const dogSrc = dogsDatas[Math.floor(i / 2)]
         const tile = document.createElement('div')
         tile.classList.add('tile')
+        tile.classList.add("blue");
+        const dogTile = document.createElement("img");
+       
+        dogTile.classList.add("tile");
         
+        dogTile.setAttribute("src", dogsDatas[Math.floor(i / 2)]);
+        dogTile.classList.add("hidden-visibility");
+        tile.appendChild(dogTile);
         tile.addEventListener("click", () => {
-            const dogTile = document.createElement("img");
-            dogTile.classList.add("tile");
-            dogTile.setAttribute("src", dogsDatas[Math.floor(i / 2)]);
-            tile.appendChild(dogTile)
+            if (flippedTiles.length < 2 && !flippedTiles.includes(tile)) {
+                flippedTiles.push(tile);}
+            dogTile.classList.toggle("hidden-visibility")
 
             if (dogFirstFlippedTile === null) { 
                 dogFirstFlippedTile = dogTile;
             }
+            
             else if (dogFirstFlippedTile?.getAttribute("src") === dogSrc) {
                 dogWonTiles.push(dogFirstFlippedTile);
                 if (dogWonTiles.length == 8) {
@@ -247,23 +254,23 @@ function dogInit() {
                     gameContainer.classList.add("less-opacity")
                 }
                 else {
+                    dogTile.classList.toggle("hidden-visibility")
                     dogFirstFlippedTile = null;
+                    flippedTiles = [];
                 }
             }
             else {
                 setTimeout(() => {
-                    dogFirstFlippedTile?.remove();
-                    tile.querySelector("img")?.remove();
+                    dogTile.classList.toggle("hidden-visibility")
                     dogFirstFlippedTile = null;
                 }, 1000);
                 compteur++
             }
 
-        });
+    });
         return tile;
     }
     )
     dogTilesElement.sort(() => Math.random() - 0.5);
     dogTilesElement.forEach(dogTile => gameContainer.appendChild(dogTile));
-
 }
