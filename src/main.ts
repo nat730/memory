@@ -87,7 +87,7 @@ function clic(tileElement: HTMLElement) {
 }
 
 compteurContainer.innerText = "";
-compteurContainer.classList.add("hidden");
+//compteurContainer.classList.add("hidden");
 
 // Créer et afficher les tuiles sur le plateau de jeu
 function init() {
@@ -163,6 +163,41 @@ restartButton.addEventListener("click", () => {
     gameContainer.classList.remove("less-opacity");
 });
 
+const dogRestartButton = document.createElement("button") as HTMLButtonElement;
+dogRestartButton.innerText = "Recommencer";
+dogRestartButton.setAttribute("id", "dog-restart-button");
+menuContainer.appendChild(dogRestartButton);
+dogRestartButton.style.display = "none"; 
+
+// Relance la partie chien quand le bouton est cliqué
+dogRestartButton.addEventListener("click", () => {
+    // Arrêter le chronomètre
+    clearInterval(chronoInterval);
+
+    // Réinitialiser le chronomètre et le compteur
+    startTime = 0;
+    chronoContainer.innerText = "temps écoulé : 0:00";
+    compteur = 0;
+    compteurContainer.innerText = "";
+    startTime = Date.now();
+    chronoInterval = setInterval(tictac, 1000);
+
+    // Réinitialiser l'état du jeu de chien
+    dogWonTiles = [];
+
+    // Réinitialiser les tuiles de chien et recommencer le jeu de chien
+    const dogTiles = document.querySelectorAll(".tile img");
+    dogTiles.forEach((dogTile) => {
+        dogTile.remove();
+    });
+
+    // Réordonner et afficher à nouveau les tuiles de chien
+    dogInit();
+
+    // Cacher le bouton de redémarrage pour la partie chien
+    dogRestartButton.style.display = "none";
+    gameContainer.classList.remove("less-opacity");
+});
 
 // Partie avec les images de chien
 let dogsDatas: string[] = []
@@ -199,16 +234,16 @@ function dogInit() {
             dogTile.setAttribute("src", dogsDatas[Math.floor(i / 2)]);
             tile.appendChild(dogTile)
 
-            if (dogFirstFlippedTile === null) {
+            if (dogFirstFlippedTile === null) { 
                 dogFirstFlippedTile = dogTile;
             }
             else if (dogFirstFlippedTile?.getAttribute("src") === dogSrc) {
                 dogWonTiles.push(dogFirstFlippedTile);
                 if (dogWonTiles.length == 8) {
-                    restartButton.innerText = "Recommencer";
-                    restartButton.setAttribute("id", "restartbutton");
-                    menuContainer.appendChild(restartButton);
-                    restartButton.style.display = "block";
+                    dogRestartButton.innerText = "Recommencer";
+                    dogRestartButton.setAttribute("id", "restartbutton");
+                    menuContainer.appendChild(dogRestartButton);
+                    dogRestartButton.style.display = "block";
                     gameContainer.classList.add("less-opacity")
                 }
                 else {
@@ -221,14 +256,9 @@ function dogInit() {
                     tile.querySelector("img")?.remove();
                     dogFirstFlippedTile = null;
                 }, 1000);
+                compteur++
             }
-            if (compteur > 0) {
-                compteurContainer.innerText = `nombre de coups : ${compteur}`;
-                compteurContainer.classList.remove("hidden");
-            } else {
-                compteurContainer.innerText = "";
-                compteurContainer.classList.add("hidden");
-            }
+
         });
         return tile;
     }
